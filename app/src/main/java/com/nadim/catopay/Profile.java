@@ -101,7 +101,7 @@ public class Profile extends Fragment {
                         @Override
                         public void run() {
                             name.setText(pi.getName());
-                            phone.setText(pi.getPhone());
+                            phone.setText(pi.getPhone().isEmpty()?"N/A":pi.getPhone());
                             balance.setText(""+String.format("%.2f",pi.getBalance()));
                             holdbalance.setText("Balance on Hold : "+String.format("%.2f",pi.getHoldamount()));
                         }
