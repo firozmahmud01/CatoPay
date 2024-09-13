@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "823045178060",
+    "project_id": "catopay-fb919",
+    "storage_bucket": "catopay-fb919.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823045178060:android:7086496dc1c9eb3e8af869",
+        "android_client_info": {
+          "package_name": "com.nadim.catopay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABUKk1cjDmHkHZ7cOp16t8dqsOfUdKX1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
