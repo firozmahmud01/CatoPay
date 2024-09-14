@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Amount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/refund_pop_up_amount_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="Amount"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Payment Method"
+        app:layout_constraintStart_toStartOf="@+id/refund_pop_up_amount_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/refund_pop_up_amount_edittext" />
+
+    <Spinner
+        android:id="@+id/refund_popup_payment_method_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <EditText
+        android:id="@+id/refund_popup_refund_reason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Refund Reason"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/refund_pop_up_amount_edittext"
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Refund Reason"
+        app:layout_constraintStart_toStartOf="@+id/refund_popup_payment_method_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/refund_popup_payment_method_spinner" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Account Type"
+        app:layout_constraintStart_toStartOf="@+id/refund_popup_refund_reason"
+        app:layout_constraintTop_toBottomOf="@+id/refund_popup_refund_reason" />
+
+    <Spinner
+        android:id="@+id/refund_popup_account_type_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        app:layout_constraintStart_toStartOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Bank Number Or Address"
+        app:layout_constraintStart_toStartOf="@+id/refund_popup_account_type_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/refund_popup_account_type_spinner" />
+
+    <EditText
+        android:id="@+id/refund_popup_screen_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Bank Number or Address"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/refund_popup_refund_reason"
+        app:layout_constraintStart_toStartOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <Button
+        android:id="@+id/refund_popup_refund_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="REFUND"
+        app:layout_constraintEnd_toEndOf="@+id/refund_popup_screen_edittext"
+        app:layout_constraintStart_toStartOf="@+id/refund_popup_screen_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/refund_popup_screen_edittext" />
+</androidx.constraintlayout.widget.ConstraintLayout>

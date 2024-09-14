@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -87,9 +88,13 @@ public class HomeScreen extends Fragment {
                     amount.setTextColor(Color.BLUE);
                     amount.setText(""+list.get(i).getAmount());
                 }
+                Button refund=view.findViewById(R.id.transaction_list_item_refund_button);
+                refund.setVisibility(View.GONE);
 
 
-                TextView tranid,method,status,description;
+                TextView tranid,method,status,description,commission;
+                commission=view.findViewById(R.id.transaction_list_item_commision_textview);
+                commission.setText(""+list.get(i).getCommission());
                 tranid=view.findViewById(R.id.transactionlistitem_transaction_id_textview);
                 tranid.setText(list.get(i).getUid());
                 method=view.findViewById(R.id.transactionlistitem_method_textview);

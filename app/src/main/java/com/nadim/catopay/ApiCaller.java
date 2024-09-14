@@ -13,6 +13,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -29,7 +33,7 @@ public class ApiCaller {
     }
 
 
-    private String sendGET(String endpoint) throws Exception{
+    private String sendGET(String endpoint,HashMap<String,String> header) throws Exception{
         URL url=new URL(host+endpoint);
         HttpsURLConnection con= (HttpsURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -37,6 +41,14 @@ public class ApiCaller {
         con.addRequestProperty("Accept","*/*");
         if(sp.getString("token",null)!=null){
             con.addRequestProperty("Authorization","Bearer "+sp.getString("token",""));
+        }
+        if(header!=null) {
+            Set<String> keys = header.keySet();
+            Iterator<String> kkk = keys.iterator();
+            while (kkk.hasNext()) {
+                String key = kkk.next();
+                con.addRequestProperty(key, header.get(key));
+            }
         }
         InputStream is=con.getInputStream();
 
@@ -138,16 +150,16 @@ public class ApiCaller {
 
     public static class PaymentItem{
         private String uid,type,description,method,status;
-        private int amount;
+        private double amount,commission;
 
-
-        public PaymentItem(String uid, String type, String description, String method, String status, int amount) {
+        public PaymentItem(String uid, String type, String description, String method, String status, double amount, double commission) {
             this.uid = uid;
             this.type = type;
             this.description = description;
             this.method = method;
             this.status = status;
             this.amount = amount;
+            this.commission = commission;
         }
 
         public String getUid() {
@@ -190,17 +202,25 @@ public class ApiCaller {
             this.status = status;
         }
 
-        public int getAmount() {
+        public double getAmount() {
             return amount;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(double amount) {
             this.amount = amount;
+        }
+
+        public double getCommission() {
+            return commission;
+        }
+
+        public void setCommission(double commission) {
+            this.commission = commission;
         }
     }
 
     public void loadTransaction() throws Exception {
-        JSONObject res=new JSONObject(sendGET("/wallet/own-transaction-history"));
+        JSONObject res=new JSONObject(sendGET("/wallet/own-transaction-history",null));
         JSONArray out=new JSONArray();
         if(res.has("success")){
             if(!res.getBoolean("success"))throw new Exception("Failed to fetch history");
@@ -221,6 +241,7 @@ public class ApiCaller {
                 JSONObject joo = jo.getJSONObject("transaction");
                 String method = joo.getString("paymentMethodTitle");
                 String status = joo.getString("status");
+                String commission=joo.getString("commissionEarn");
 
                 JSONObject nobj = new JSONObject();
                 nobj.put("uid", uid);
@@ -229,6 +250,7 @@ public class ApiCaller {
                 nobj.put("description", description);
                 nobj.put("method", method);
                 nobj.put("status", status);
+                nobj.put("commission",commission);
                 out.put(nobj);
             }catch (Exception e){}
 
@@ -244,6 +266,9 @@ public class ApiCaller {
 
 
     }
+
+
+
     public ArrayList<PaymentItem> getTransList() throws Exception {
         ArrayList<PaymentItem> pia=new ArrayList<>();
         JSONArray ja=new JSONArray(sp.getString("paymentlist","[]"));
@@ -252,7 +277,7 @@ public class ApiCaller {
 
         for(int i=0;i<ja.length();i++){
             JSONObject jo=ja.getJSONObject(i);
-            PaymentItem pi=new PaymentItem(jo.getString("uid"),jo.getString("type"),jo.getString("description"),jo.getString("method"),jo.getString("status"),jo.getInt("amount"));
+            PaymentItem pi=new PaymentItem(jo.getString("uid"),jo.getString("type"),jo.getString("description"),jo.getString("method"),jo.getString("status"),jo.getDouble("amount"),jo.getDouble("commission"));
             pia.add(pi);
         }
 
@@ -278,12 +303,14 @@ public class ApiCaller {
     public static class ProfileItem{
         private String name,phone;
         private double balance,holdamount;
+        private String api_key;
 
-        public ProfileItem(String name, String phone, double balance, double holdamount) {
+        public ProfileItem(String name, String phone, double balance, double holdamount, String api_key) {
             this.name = name;
             this.phone = phone;
             this.balance = balance;
             this.holdamount = holdamount;
+            this.api_key = api_key;
         }
 
         public String getName() {
@@ -317,16 +344,29 @@ public class ApiCaller {
         public void setHoldamount(double holdamount) {
             this.holdamount = holdamount;
         }
+
+        public String getApi_key() {
+            return api_key;
+        }
+
+        public void setApi_key(String api_key) {
+            this.api_key = api_key;
+        }
     }
 
     public ProfileItem getProfile() throws Exception {
-        JSONObject res=new JSONObject(sendGET("/users/profile-info"));
+        JSONObject res=new JSONObject(sendGET("/users/profile-info",null));
         if(!res.has("data"))throw new Exception("Internal error!");
         res=res.getJSONObject("data");
         if(!res.has("name"))throw new Exception("Internal error!");
         String name=res.getString("name");
         if(!res.has("contactNumber"))throw new Exception("Internal error!");
         String number=res.getString("contactNumber");
+        if(!res.has("developmentInfo"))throw new Exception("Internal error!");
+        JSONObject jjj=res.getJSONObject("developmentInfo");
+
+        if(!jjj.has("apiKey"))throw new Exception("Internal error!");
+        String apikey=jjj.getString("apiKey");
 
         if(!res.has("wallet"))throw new Exception("Internal error!");
         res=res.getJSONObject("wallet");
@@ -334,7 +374,8 @@ public class ApiCaller {
         double balance=res.getDouble("balance");
         if(!res.has("holdAmount"))throw new Exception("Internal error!");
         double holdbalance= res.getDouble("holdAmount");
-        return new ProfileItem(name,number,balance,holdbalance);
+
+        return new ProfileItem(name,number,balance,holdbalance,apikey);
 
     }
 
@@ -364,7 +405,7 @@ public class ApiCaller {
     }
 
     public ArrayList<PaymentMethods> loadWithdrawList() throws Exception {
-        String list=sendGET("/users/configured-payment-methods");
+        String list=sendGET("/users/configured-payment-methods",null);
         ArrayList<PaymentMethods> pm=new ArrayList<>();
         JSONObject jo=new JSONObject(list);
         if(!jo.has("data")) throw new Exception("Internal Error");
@@ -393,6 +434,59 @@ public class ApiCaller {
         
 
     }
+
+
+
+
+    public Map<String,String> refundpaymentMethod()throws Exception{
+        HashMap<String,String >header=new HashMap<>();
+        ProfileItem pi=getProfile();
+
+        header.put("x-api-key",pi.getApi_key());
+        String output=sendGET("/payment/methods",header);
+
+        HashMap<String,String> result=new HashMap<>();
+        JSONObject jo=new JSONObject(output);
+        JSONArray ja=jo.getJSONArray("data");
+        for(int i=0;i<ja.length();i++){
+            try {
+                JSONObject jj = ja.getJSONObject(i);
+                result.put(jj.getString("providerName"),jj.getString("id"));
+            }catch (Exception e){}
+        }
+
+
+        return result;
+
+
+    }
+
+
+
+    public void requestforrefund(double amount,String transactionid,String paymentmethodid,String refundreason,String accounttype,String bank)throws Exception{
+
+
+        JSONObject jo=new JSONObject();
+        jo.put("amount",amount);
+        jo.put("paymentMethodId",paymentmethodid);
+        jo.put("referenceTxnId",transactionid);
+        jo.put("refundReason",refundreason);
+        jo.put("accountType",accounttype);
+        jo.put("bankNumberOrAddress",bank);
+
+
+
+
+
+        String response=sendPOST("/refund/create",jo.toString());
+
+    }
+
+
+
+
+
+
 
 
 

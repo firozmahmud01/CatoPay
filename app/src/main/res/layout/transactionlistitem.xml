@@ -81,8 +81,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Description :"
-        app:layout_constraintStart_toStartOf="@+id/textView25"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+        app:layout_constraintStart_toStartOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
         android:id="@+id/transactionlistitem_description_textview"
@@ -95,4 +95,34 @@
         app:layout_constraintEnd_toEndOf="@+id/transactionlistitem_status_textview"
         app:layout_constraintStart_toStartOf="@+id/textView29"
         app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Commission :"
+        app:layout_constraintStart_toStartOf="@+id/textView25"
+        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+    <TextView
+        android:id="@+id/transaction_list_item_commision_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/transaction_list_item_refund_button"
+        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+    <Button
+        android:id="@+id/transaction_list_item_refund_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button"
+        android:text="REFUND"
+        app:layout_constraintBottom_toTopOf="@+id/transactionlistitem_description_textview"
+        app:layout_constraintEnd_toEndOf="@+id/transactionlistitem_status_textview"
+        app:layout_constraintTop_toBottomOf="@+id/transactionlistitem_status_textview" />
 </androidx.constraintlayout.widget.ConstraintLayout>

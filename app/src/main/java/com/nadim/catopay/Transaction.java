@@ -13,12 +13,34 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class Transaction extends Fragment {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     int limit=-1;
@@ -74,15 +96,20 @@ Thread th;
                     view=inflater.inflate(R.layout.transactionlistitem,null);
                 }
                 TextView amount=view.findViewById(R.id.transaction_list_item_amount_textview);
+                Button refund=view.findViewById(R.id.transaction_list_item_refund_button);
                 if(list.get(i).getType().equalsIgnoreCase("DEBIT")){
+                    refund.setVisibility(View.VISIBLE);
                     amount.setTextColor(Color.RED);
                     amount.setText("-"+list.get(i).getAmount());
                 }else{
+                    refund.setVisibility(View.GONE);
                     amount.setTextColor(Color.BLUE);
                     amount.setText(""+list.get(i).getAmount());
                 }
 
-                TextView tranid,method,status,description;
+                TextView tranid,method,status,description,commission;
+                commission=view.findViewById(R.id.transaction_list_item_commision_textview);
+                commission.setText(""+list.get(i).getCommission());
                 tranid=view.findViewById(R.id.transactionlistitem_transaction_id_textview);
                 tranid.setText(list.get(i).getUid());
                 method=view.findViewById(R.id.transactionlistitem_method_textview);
