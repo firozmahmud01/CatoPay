@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="350dp"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textView13"
@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/refund_popup_account_type_spinner" />
 
     <EditText
-        android:id="@+id/refund_popup_screen_edittext"
+        android:id="@+id/refund_popup_screen_bank_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -106,8 +106,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:text="REFUND"
-        app:layout_constraintEnd_toEndOf="@+id/refund_popup_screen_edittext"
-        app:layout_constraintStart_toStartOf="@+id/refund_popup_screen_edittext"
-        app:layout_constraintTop_toBottomOf="@+id/refund_popup_screen_edittext" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/refund_popup_screen_bank_edittext"
+        app:layout_constraintStart_toStartOf="@+id/refund_popup_screen_bank_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/refund_popup_screen_bank_edittext" />
 </androidx.constraintlayout.widget.ConstraintLayout>

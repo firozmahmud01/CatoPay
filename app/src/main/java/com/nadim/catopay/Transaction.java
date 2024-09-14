@@ -55,6 +55,7 @@ Handler hand;
     BaseAdapter ba;
     ArrayList<ApiCaller.PaymentItem> list;
     ApiCaller ac;
+    Handler hhh;
 Thread th;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +65,7 @@ Thread th;
 
         SharedPreferences sp= getContext().getSharedPreferences(ApiCaller.database, Context.MODE_PRIVATE);
         ac=new ApiCaller(getContext());
-
+        hhh=new Handler();
         list=new ArrayList<>();
 
         lv=vi.findViewById(R.id.transaction_listview);
@@ -106,6 +107,15 @@ Thread th;
                     amount.setTextColor(Color.BLUE);
                     amount.setText(""+list.get(i).getAmount());
                 }
+                final int position=i;
+                refund.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        RefundHandler rh=new RefundHandler(Transaction.this.getContext(),hhh,list.get(position).getUid(),list.get(position).getAmount());
+                        rh.show();
+
+                    }
+                });
 
                 TextView tranid,method,status,description,commission;
                 commission=view.findViewById(R.id.transaction_list_item_commision_textview);

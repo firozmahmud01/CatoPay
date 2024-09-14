@@ -438,7 +438,7 @@ public class ApiCaller {
 
 
 
-    public Map<String,String> refundpaymentMethod()throws Exception{
+    public HashMap<String,String> refundpaymentMethod()throws Exception{
         HashMap<String,String >header=new HashMap<>();
         ProfileItem pi=getProfile();
 
