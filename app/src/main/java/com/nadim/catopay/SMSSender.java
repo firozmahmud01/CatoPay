@@ -259,17 +259,27 @@ public class SMSSender extends Service {
 
 
 
+
+
+
                                     ac.uploadSMS(si.getTxnId(),si.getCashOutNumber() , si.getAmount(),si.getProvider());
                                     SharedPreferences.Editor spe=getSharedPreferences(ApiCaller.database,MODE_PRIVATE).edit();
                                     spe.putBoolean(si.getTxnId(),true);
                                     spe.apply();
                                 }catch (Exception e){
-
-                                    if(e.getMessage().equals("400")){
-                                        SharedPreferences.Editor spe=getSharedPreferences(ApiCaller.database,MODE_PRIVATE).edit();
-                                        spe.putBoolean(si.getTxnId(),true);
-                                        spe.apply();
-                                    }
+//                                    SharedPreferences sp=getSharedPreferences(ApiCaller.database,MODE_PRIVATE);
+//                                    int count=sp.getInt(si.getTxnId()+"count",0);
+//
+//                                    SharedPreferences.Editor spe =sp.edit();
+//                                    if(e.getMessage().equals("400")){
+//                                        if(count<100){
+//                                            spe.putInt(si.getTxnId()+"count",count+1);
+//                                            spe.apply();
+//                                        }else {
+//                                            spe.putBoolean(si.getTxnId(), true);
+//                                            spe.apply();
+//                                        }
+//                                    }
                                 }
                             }
                         }catch (Exception e){
