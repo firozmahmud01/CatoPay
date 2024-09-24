@@ -1,5 +1,7 @@
 package com.nadim.catopay;
 
+import static java.util.Collections.singletonMap;
+
 import android.app.Notification;
 import android.app.Service;
 import android.content.ContentResolver;
@@ -18,9 +20,14 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.ServiceCompat;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class SMSSender extends Service {
     public static boolean isrunning=false;
@@ -221,8 +228,44 @@ public class SMSSender extends Service {
         doall();
 
     }
+    private boolean issockrunning=false;
+
+    Socket socket;
+    private void connectSocket(){
+        try {
+            SharedPreferences sp= getSharedPreferences(ApiCaller.database, Context.MODE_PRIVATE);
+            String token=sp.getString("token",null);
+            IO.Options options = IO.Options.builder()
+                    .setAuth(singletonMap("token", token))
+                    .build();
+            socket = IO.socket(URI.create("https://api.catopay.com"),options);
+        } catch (Exception e) {
+            int a=10;
+        }
+        socket.connect();
 
 
+
+
+        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                issockrunning=true;
+            }
+        });
+        socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                int b=10;
+            }
+        });
+        socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                issockrunning=false;
+            }
+        });
+    }
 
 
 
@@ -230,8 +273,12 @@ public class SMSSender extends Service {
     Thread th=null;
     Handler hand;
     private void doall(){
+
         hand=new Handler();
         ac=new ApiCaller(getApplicationContext());
+        if(ac.shouldSocketOn()) {
+            connectSocket();
+        }
         if(th==null) {
             th = new Thread() {
                 @Override
@@ -251,6 +298,39 @@ public class SMSSender extends Service {
                                 continue;
                             }
                         }catch (Exception e){}
+
+
+
+
+                        if(ac.shouldSocketOn()){
+                            if(!issockrunning){
+                                if(socket==null){
+                                    connectSocket();
+                                }else{
+                                    try {
+                                        socket.connect();
+                                    }catch (Exception e){
+                                        int a=10;
+                                    }
+                                }
+                            }
+                        }else{
+                            if(issockrunning){
+                                try {
+                                    if(socket!=null) socket.disconnect();
+
+                                }catch (Exception e){}
+                            }
+                        }
+
+
+
+
+
+
+
+
+
                         try {
                             ArrayList<Smsitem> all = readSms();
 

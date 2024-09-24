@@ -39,9 +39,7 @@ public class Profile extends Fragment {
                 SharedPreferences sp = getContext().getSharedPreferences(ApiCaller.database, Context.MODE_PRIVATE);
                 SharedPreferences.Editor she = sp.edit();
                 she.putBoolean("active", true);
-                if (ActiveStatus.isrunning) {
-                    getContext().stopService(new Intent(getContext(), ActiveStatus.class));
-                }
+
                 she.putString("email", null);
                 she.apply();
                 startActivity(new Intent(getContext(), MainActivity.class));
@@ -83,11 +81,7 @@ public class Profile extends Fragment {
                 SharedPreferences.Editor she=sp.edit();
                 she.putBoolean("active",b);
                 she.apply();
-                if(!ActiveStatus.isrunning&&b){
-                    getContext().startService(new Intent(getContext(), ActiveStatus.class));
-                }else if(!b&&ActiveStatus.isrunning){
-                    getContext().stopService(new Intent(getContext(),ActiveStatus.class));
-                }
+
             }
         });
 

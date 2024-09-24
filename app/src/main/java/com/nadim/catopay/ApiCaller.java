@@ -484,6 +484,12 @@ public class ApiCaller {
 
 
 
+    public boolean shouldSocketOn(){
+        return sp.getBoolean("active",true);
+    }
+
+
+
 
 
 

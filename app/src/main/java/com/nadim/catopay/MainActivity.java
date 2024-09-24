@@ -72,9 +72,7 @@ boolean bo=false;
         SharedPreferences sp=getSharedPreferences(ApiCaller.database,MODE_PRIVATE);
         String email=sp.getString("email",null);
 
-        if(sp.getBoolean("active",true)&&email!=null) {
-            startService(new Intent(MainActivity.this, ActiveStatus.class));
-        }
+
 
         ac=new ApiCaller(MainActivity.this);
 
